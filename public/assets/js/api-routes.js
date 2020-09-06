@@ -1,16 +1,18 @@
+//Dependencies
 const fs = require("fs");
 const path = require("path");
 const noteList = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
 
+//Exports API routes to app.js
 module.exports = function (app) {
  
-    //Get request from index.js
+//Get request from the databse to the page
   app.get("/api/notes", function (req, res) {
     res.json(noteList);
   });
 
 
-//Read json array
+//Posts a new note to the database with an id
   app.post("/api/notes", function (req, res) {
     let newNote = req.body;
     noteList.push(newNote);
@@ -29,24 +31,21 @@ module.exports = function (app) {
     });
   });
 
-//called from index.js and will delete given file
+// Deletes a note by way of the note's id
 
-  app.delete("/api/notes/:id", function (req, res) {
-    let listId = req.params;
-
-    for (let i = 0; i < noteList.length; i++) {
-      noteList[i].id === listId.id ? noteList.splice(i, 1) : console.log("");
-    }
-
-    fs.writeFile("db/db.json", JSON.stringify(noteList),
-      (err) => {
-        if (err) {
-          throw err;
+ app.delete("/api/notes/:id", function (req, res) {
+      let noteId = req.params;
+      for (let i = 0; i < noteList.length; i++) {
+        if (noteList[i].id === noteId.id) {
+          noteList.splice(i, 1);
         }
-
-        console.log("Item deleted ... Database updated");
-        res.json(noteList);
       }
-    );
-  });
-};
+  
+      fs.writeFile("db/db.json", JSON.stringify(noteList), function (error) {
+        if (error) {
+          throw error;
+        }
+        res.json(noteList);
+      });
+    });
+  };
