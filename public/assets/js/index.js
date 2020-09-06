@@ -1,4 +1,3 @@
-  
 const $noteTitle = $(".note-title");
 const $noteText = $(".note-textarea");
 const $saveNoteBtn = $(".save-note");
@@ -105,9 +104,10 @@ const handleRenderSaveBtn = function () {
 // Render's the list of note titles
 const renderNoteList = (notes) => {
   $noteList.empty();
+console.log(notes)
 
   const noteListItems = [];
-console.log(notes)
+
   // Returns jquery object for li with given text and delete button
   // unless withDeleteButton argument is provided as false
   const create$li = (text, withDeleteButton = true) => {
@@ -132,8 +132,6 @@ console.log(notes)
     const $li = create$li(note.title).data(note);
     noteListItems.push($li);
   });
-
-
 
   $noteList.append(noteListItems);
 };

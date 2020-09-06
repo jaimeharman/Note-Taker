@@ -1,12 +1,14 @@
-const express = require("express");
-const app = express();
+//Required modules stored in variables.
+var express = require("express");
+var path = require("path")
+var fs = require("fs")
 
-let PORT = process.env.PORT || 8080;
-
+var app = express();
+var PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 require("./public/assets/js/html-routes")(app);
 require("./public/assets/js/api-routes")(app);

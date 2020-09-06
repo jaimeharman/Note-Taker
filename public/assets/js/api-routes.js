@@ -1,52 +1,52 @@
 const fs = require("fs");
+const path = require("path");
+const noteList = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
 
 module.exports = function (app) {
-
-  //** This will grab the /api/notes GET request from index.js. This function reads the JSON file and sends it back to the index.js*/
+ 
+    //Get request from index.js
   app.get("/api/notes", function (req, res) {
-    fs.readFile("./db/db.json", (err, data) => {
-      if (err) throw err;
-      let db = JSON.parse(data);
-      res.json(db);
-    });
+    res.json(noteList);
   });
 
-  //** Called from the index.js file with a object made from the users response of the notes. It will read the JSON array, push the note into the array, and reformat the whole json with the new array of objects inside of it, afterward it will send back a res.json with the new database */
+
+//Read json array
   app.post("/api/notes", function (req, res) {
-    let note = req.body;
+    let newNote = req.body;
+    noteList.push(newNote);
 
-    fs.readFile("./db/db.json", (err, data) => {
-      if (err) throw err;
-      let db = JSON.parse(data);
-      db.push(note);
+    noteList.forEach((element) => {
+      let noteId = noteList.length.toString();
+      newNote.id = noteId;
+    });
 
-      fs.writeFile("./db/db.json", JSON.stringify(db), (err) => {
-        if (err) throw err;
-
-        console.log("Database updated");
-      });
-      res.json(db);
+    fs.writeFile("db/db.json", JSON.stringify(noteList), (err) => {
+      if (err) {
+        throw err;
+      }
+      console.log("Database updated");
+      res.json(noteList);
     });
   });
 
-  //** Called from the index.js file this will delete the given object that the user clicked the delete button from. */
+//called from index.js and will delete given file
 
   app.delete("/api/notes/:id", function (req, res) {
-    let Listid = req.params;
+    let listId = req.params;
 
-    fs.readFile("./db/db.json", (err, data) => {
-      if (err) throw err;
-      let db = JSON.parse(data);
-      for (let i = 0; i < db.length; i++) {
-        db[i].id === Listid.id ? db.splice(i, 1) : console.log("");
-      }
+    for (let i = 0; i < noteList.length; i++) {
+      noteList[i].id === listId.id ? noteList.splice(i, 1) : console.log("");
+    }
 
-      fs.writeFile("./db/db.json", JSON.stringify(db), (err) => {
-        if (err) throw err;
+    fs.writeFile("db/db.json", JSON.stringify(noteList),
+      (err) => {
+        if (err) {
+          throw err;
+        }
 
         console.log("Item deleted ... Database updated");
-        res.json(db);
-      });
-    });
+        res.json(noteList);
+      }
+    );
   });
 };
