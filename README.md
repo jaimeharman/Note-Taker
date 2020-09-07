@@ -10,7 +10,7 @@ Enter text and click the save file icon to save it, or the pen icon to create a 
 
 Heroku App Site: https://mysterious-wildwood-03125.herokuapp.com/
 
-[Watch the demo video] (https://drive.google.com/file/d/1x1v_gT36WsAEwBQJ8fFjD5U6l9nx_aLI/view?usp=sharing)
+[Watch the Demo:] (https://drive.google.com/file/d/1x1v_gT36WsAEwBQJ8fFjD5U6l9nx_aLI/view?usp=sharing)
 
 # Resources
 Jquery, Express, Node, Heroku
